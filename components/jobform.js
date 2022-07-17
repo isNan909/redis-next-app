@@ -27,15 +27,17 @@ export default function Jobform() {
         },
         body: JSON.stringify(formData),
       });
-      await res.json().then(
-        toast({
-          title: 'Your new job is added.',
-          description: "We've added your job to public to see.",
-          status: 'success',
-          duration: 6000,
-          isClosable: true,
-        })
-      );
+      if (res.ok) {
+        await res.json().then(
+          toast({
+            title: 'Your new job is added.',
+            description: "We've added your job to public to see.",
+            status: 'success',
+            duration: 6000,
+            isClosable: true,
+          })
+        );
+      }
       formElement.current.reset();
     } catch (err) {
       console.log(err);
@@ -85,10 +87,10 @@ export default function Jobform() {
                     type="submit"
                     loadingText="Submitting"
                     size="lg"
-                    bg={'green.400'}
+                    bg={'red.400'}
                     color={'white'}
                     _hover={{
-                      bg: 'green.500',
+                      bg: 'red.500',
                     }}
                   >
                     Hire a talent
