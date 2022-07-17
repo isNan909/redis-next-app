@@ -3,8 +3,10 @@ import { Client, Entity, Schema } from 'redis-om';
 const client = new Client();
 
 async function connect() {
-  if (client.isOpen()) return;
+  if(client.isOpen()) return;
   await client.open(process.env.CONNECTION_URL);
+  if (!client.isOpen()) {
+  }
 }
 
 class Job extends Entity {}

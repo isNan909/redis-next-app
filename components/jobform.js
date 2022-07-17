@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import {
   Flex,
   Box,
@@ -8,22 +9,37 @@ import {
   Button,
   Heading,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react';
 
 export default function Jobform() {
+  const formElement = useRef();
+  const toast = useToast();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = new FormData(e.target);
-    const formData = Object.fromEntries(form.entries());
-    const res = await fetch('/api/jobs', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
-    const result = await res.json();
-    console.log(result);
+    try {
+      const formData = Object.fromEntries(form.entries());
+      const res = await fetch('/api/jobs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      await res.json().then(
+        toast({
+          title: 'Your new job is added.',
+          description: "We've added your job to public to see.",
+          status: 'success',
+          duration: 6000,
+          isClosable: true,
+        })
+      );
+      formElement.current.reset();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -47,7 +63,7 @@ export default function Jobform() {
             p={8}
           >
             <Stack spacing={4}>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} ref={formElement}>
                 <FormControl mb={6} id="company name" isRequired>
                   <FormLabel>Company Name</FormLabel>
                   <Input name="company" type="text" />
@@ -75,7 +91,7 @@ export default function Jobform() {
                       bg: 'green.500',
                     }}
                   >
-                    Sign up
+                    Hire a talent
                   </Button>
                 </Stack>
               </form>
