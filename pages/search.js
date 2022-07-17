@@ -9,7 +9,7 @@ export default function SearchTalent() {
     const params = new URLSearchParams({ query });
     const data = await fetch('/api/getjobs?' + params);
     const response = await data.json();
-    console.log(response);
+    console.log(response.jobs);
     setResults(response['jobs']);
   };
   return (
@@ -26,7 +26,7 @@ export default function SearchTalent() {
           </Text>
           <Input onChange={handleChange} placeholder="" size="md" />
         </>
-        {results && results.map((job) => {
+        {results && results?.map((job) => {
           return (
             <Box mt="8">
               <Text fontWeight="medium" mb="10px">

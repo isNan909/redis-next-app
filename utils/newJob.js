@@ -48,7 +48,6 @@ export async function getJobs(query) {
   const repository = client.fetchRepository(jobSchema);
   return await repository
     .search()
-    .where('title')
-    .match(query + '*')
+    .where('title').matches(query)
     .return.all();
 }
