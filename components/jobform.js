@@ -15,11 +15,19 @@ export default function Jobform() {
     e.preventDefault();
     const form = new FormData(e.target);
     const formData = Object.fromEntries(form.entries());
-    console.log(formData);
+    const res = await fetch('/api/jobs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+    const result = await res.json();
+    console.log(result);
   };
 
   return (
-    <div>
+    <>
       <Flex
         minH={'100vh'}
         align={'center'}
@@ -75,6 +83,6 @@ export default function Jobform() {
           </Box>
         </Stack>
       </Flex>
-    </div>
+    </>
   );
 }
