@@ -18,9 +18,9 @@ let jobSchema = new Schema(
   Job,
   {
     company: { type: 'string' },
-    title: { type: 'text', textSearch: true },
     experience: { type: 'string' },
     website: { type: 'string' },
+    title: { type: 'text', textSearch: true },
   },
   {
     dataStructure: 'JSON',
@@ -46,5 +46,9 @@ export async function createIndex() {
 export async function getJobs(query) {
   await connect();
   const repository = client.fetchRepository(jobSchema);
-  return await repository.search().where('title').match(query).return.all();
+  return await repository
+    .search()
+    .where('title')
+    .match(query + '*')
+    .return.all();
 }
